@@ -7,6 +7,7 @@
   --accent: #750787;
   --line: rgba(117, 7, 135, 0.22);
   --max: 1280px;
+    --page-max: 2000px;
 }
 
 * {
@@ -30,8 +31,10 @@ body {
 /* stacked background images */
 .page-bg {
   position: absolute;
-  inset: 0 0 auto 0;
-  width: 100%;
+  top: 0;
+  left: 50%;
+  width: min(100%, var(--page-max));
+  transform: translateX(-50%);
   z-index: -1;
   pointer-events: none;
 }
@@ -41,6 +44,14 @@ body {
   width: 100%;
   height: auto;
 }
+
+.container,
+.nav {
+  width: calc(100vw - 6vw);
+  max-width: none;
+  margin: 0 auto;
+}
+
 
 /* basic defaults */
 a {
