@@ -1,0 +1,403 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+  --font: "Helvetica Neue", Arial, sans-serif;
+  --text: #1b1026;
+  --muted: #6d5878;
+  --accent: #750787;
+  --line: rgba(117, 7, 135, 0.22);
+  --max: 1280px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.65;
+  background: transparent;
+  overflow-x: hidden;
+}
+
+/* stacked background images */
+.page-bg {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page-bg img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* basic defaults */
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+.section {
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  background: transparent;
+}
+
+/* header */
+.site-header {
+  position: relative;
+  top: 0;
+  z-index: 50;
+  background: transparent;
+}
+
+.container {
+  width: min(100% - 6vw, var(--max));
+  margin: 0 auto;
+}
+
+.nav {
+  width: min(100% - 6vw, 1800px);
+  margin: 0 auto;
+}
+
+
+
+.brand {
+  display: none;
+}
+
+.nav-menu {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 1.4rem 0;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.25rem;
+  text-transform: lowercase;
+}
+
+.nav-cta {
+  margin-left: auto;
+  min-height: 68px;
+  padding: 1.1rem 2.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  border: 1.5px solid currentColor;
+}
+
+
+.nav {
+  position: relative;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.qrh-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.qrh-logo img {
+  height: 80px;
+}
+
+
+/* hero */
+.hero {
+  min-height: 72vh;
+  display: grid;
+  align-items: center;
+  background: transparent;
+}
+
+.hero-bg {
+  display: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.72fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 2rem;
+}
+
+h1 {
+  font-size: clamp(4.2rem, 12vw, 10.5rem);
+  line-height: 0.78;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+h2 {
+  font-size: clamp(2.25rem, 4.8vw, 5rem);
+  line-height: 1.08;
+  font-weight: 300;
+  letter-spacing: -0.06em;
+}
+
+h3 {
+  font-weight: 500;
+}
+
+.hero-lede {
+  max-width: 760px;
+  font-size: clamp(1.25rem, 2.1vw, 1.9rem);
+  line-height: 1.32;
+}
+
+.muted,
+.prose,
+.schedule-item p,
+.speaker-card p,
+.cta-card p {
+  color: var(--muted);
+}
+
+/* transparent cards */
+.hero-panel,
+.card,
+.speaker-card,
+.cta-card,
+.event-card,
+.schedule-item,
+.commitments div {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.card,
+.speaker-card,
+.cta-card,
+.hero-panel {
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+}
+
+.cards {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cards.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.cards.four {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+}
+
+.event-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 2.8rem 0;
+}
+
+.schedule {
+  display: grid;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-footer {
+  padding: 3rem 0;
+  background: transparent;
+  border-top: 1px solid var(--line);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.8fr 0.6fr;
+  gap: 2rem;
+}
+
+/* mobile */
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .cards.three,
+  .cards.four,
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .event-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .container,
+  .nav {
+    width: min(100% - 2rem, var(--max));
+  }
+
+  .nav {
+    justify-content: flex-end;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    background: transparent;
+    border: 1px solid var(--line);
+    padding: 0.45rem 0.7rem;
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--line);
+  }
+
+  .nav-menu.open {
+    display: flex;
+  }
+
+  .nav-menu a:nth-child(4) {
+    margin-left: 0;
+  }
+
+  .cards.three,
+  .cards.four,
+  .footer-grid,
+  .schedule-item {
+    grid-template-columns: 1fr;
+  }
+}
+
+.joy-block h2 {
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.08;
+  margin-bottom: 0.75rem;
+  max-width: 500px;
+}
+.queer-joy-text {
+  max-width: 900px;
+  font-size: clamp(1.25rem, 1.7vw, 1.9rem);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  color: var(--text);
+}
+
+/* .bold-black {
+  font-weight: 600;
+  color: #000;
+} */
+
+.joy-heading {
+  line-height: 1.08;
+}
+
+
+
+
+
+.queer-joy-heading {
+  font-size: clamp(2rem, 4.8vw, 4rem);
+  line-height: 1.18;
+  letter-spacing: -0.06em;
+  font-weight: 700;
+  font-style: italic;
+  color: #000;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+
+
+.queer-joy-body {
+  grid-column: 2;
+  justify-self: end;
+  max-width: 500px;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  line-height: 1.35;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  color: #000;
+}
+
+.queer-joy-body p {
+  margin: 0 0 1.8rem;
+}
+
+
+
+
+.queer-joy-copy {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: clamp(2rem, 7vw, 6rem);
+  align-items: center;
+}
+
+.queer-joy-logo {
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
