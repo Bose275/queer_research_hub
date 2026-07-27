@@ -1,98 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Queer Research Hub</title>
-  <meta name="description" content="Queerposium is an interdisciplinary gathering by the Queer Research Hub, bringing together queer research, community, and collaboration." />
-  <meta property="og:title" content="Queer Research Hub" />
-  <meta property="og:description" content="An interdisciplinary space for queer research, community, and collaboration." />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-  <div class="page-bg" aria-hidden="true">
-    <img src="homepage_backgrounds/Home.png" alt="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  </div>
-
-  
   <header class="site-header">
-    <nav class="nav" aria-label="Main navigation">
-      <a href="#" class="brand" aria-label="Queerposium home">
-        <span class="brand-mark">Q</span>
-        <span>
-          <strong>Queerposium</strong>
-          <small>Queer Research Hub</small>
-        </span>
+    <div class="announcement-bar">
+      <p>
+        <span aria-hidden="true"></span>
+        September 2026 social is underway
+      </p>
+      <a href="#connect">Get involved <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="nav-shell">
+      <a class="brand" href="#top" aria-label="Queer Research Hub home">
+        <img class="brand-mark" src="assets\queer_research_hub_logo.png" alt="" aria-hidden="true" />
       </a>
 
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
-        <span class="sr-only">Open menu</span>
-        ☰
-      </button>
+      <input class="nav-toggle" type="checkbox" id="nav-toggle" />
+      <label class="nav-toggle-label" for="nav-toggle">
+        <span class="sr-only">Toggle navigation</span>
+        <span></span><span></span>
+      </label>
 
-      <div class="nav-menu" id="nav-menu">
+      <nav class="primary-nav" aria-label="Primary navigation">
         <a href="#about">About</a>
-        <a href="#community">Our Team</a>
-        <a href="#register" class="nav-cta">Join Us</a>
-      </div>
-    </nav>
-    <a href="#" class="qrh-logo" aria-label="Queer Research Hub home">
-      <img src="homepage_backgrounds\QRH_Logo.png" alt="Queer Research Hub logo">
-    </a>
+        <a href="#research">Research</a>
+        <a href="#events">Events</a>
+        <a href="#people">People</a>
+        <a href="#resources">Resources</a>
+        <a class="nav-button" href="#connect">Join the hub</a>
+      </nav>
+    </div>
   </header>
 
-  <main id="main">
+  <main id="main-content">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <!-- <p class="eyebrow">Transdisciplinary. Community-led. Unapologetically queer.</p> -->
+        <h1>
+          <span class="hero-main">
+            Let's create space,<br>
+            build community,<br>
+            and revel in <em>queer joy.</em>
+          </span><br>
+        </h1>
+        <p class="hero-intro">
+          A space to share ideas, highlight queer scholarship, and support projects that centre queer experiences across disciplines.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#about">Some button here idk yet</a>
+          <!-- <a class="text-link" href="#research">See our work <span aria-hidden="true">→</span></a> -->
+        </div>
+      </div>
 
-    <section id="about" class="section">
-      <div class="container two-col">
-        <div class="joy-block">
-          <h2 class="joy-heading">
-            Let’s create space, 
-            build community, and
-            revel in queer joy.
-          </h2>
-          <p class="queer-joy-text">
-            A space to share ideas, highlight queer scholarship, and support projects that centre queer experiences across disciplines. 
-          </p>
-        </div>
-        <div class="prose">
-        </div>
+      <div class="hero-visual">
+        <img
+          class="hero-illustration"
+          src="assets/queer-research-foreground.png"
+        />
       </div>
     </section>
 
-<section id="queer-joy" class="section queer-joy-section">
-  <div class="container queer-joy-container">
+    <section class="ticker" aria-label="Hub values">
+      <div class="ticker-track">
+        <i>✦</i>
+        <span>Queer scholarship</span><i>✦</i>
+        <span>Community engagement</span><i>✦</i>
+        <span>Transdisciplinary collaboratoin</span><i>✦</i>
+        <span>Collective action</span><i>✦</i>
+      </div>
+    </section>
 
-    <h2 class="queer-joy-heading">
-      Queer joy: The celebration of happiness, resilience, and authenticity found in queer life.
-    </h2>
+    <section class="intro-section section" id="about">
+      <div class="section-label">01 / About us</div>
+      <div class="intro-grid">
+        <h2>The celebration of happiness, resilience, and authenticity found in queer life.</h2>
+        <div class="intro-copy">
+          <p>
+            The Queer Research Hub is an emerging initiative at the University of
+            Calgary that brings together 2SLGBTQIA+ students, staff, faculty, and allies
+            interested in research, collaboration, and community.
+          </p>
 
-    <div class="queer-joy-copy">
-      <div class="queer-joy-logo">
-        <img 
-          src="homepage_backgrounds/QRH_Logo.png" 
-          alt="Queer Research Hub logo"
-        >
+          <p>
+            The hub centres queer experiences across disciplines, while creating space
+            to share ideas, highlight queer scholarship, foster collaboration, and build
+            visibility for queer research.
+          </p>
+          <a class="text-link" href="#connect">Some button here idk yet <span aria-hidden="true">→</span></a>
+        </div>
       </div>
 
-      <div class="queer-joy-body">
-        <p>
-          The Queer Research Hub is an emerging initiative at the University of Calgary that brings together 2SLGBTQIA+ students, staff, faculty, and allies interested in research, collaboration, and community.
-        </p>
+      <div class="values-grid">
+        <article class="value-card value-lilac">
+          <span class="card-number">03</span>
+          <h3>Elevate</h3>
+          <p>Share and celebrate queer research.</p>
+        </article>
 
+        <article class="value-card value-yellow">
+          <span class="card-number">01</span>
+          <h3>Connect</h3>
+          <p>Build relationships with scholars across disciplines and lived experience.</p>
+        </article>
+
+
+        <article class="value-card value-mint">
+          <span class="card-number">02</span>
+          <h3>Collaborate</h3>
+          <p>Break out of silos to build transdiscplinary networks.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="research-section section" id="research">
+      <div class="section-heading-row">
+        <div>
+          <div class="section-label">02 / Featured research</div>
+          <h2>The Gay Agenda (of Research)</h2>
+          <h1>I'll also have an option where people can feature their queer research! :D</h1>
+        </div>
+        <a class="button button-outline" href="#resources">Check out all research</a>
+      </div>
+
+      <div class="research-grid">
+        <article class="research-card research-card-featured">
+          <div class="research-visual visual-network" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="research-content">
+            <p class="content-type">Researcher's names</p>
+            <h3>Someone's super cool research project</h3>
+            <p>
+              Super cool description of someone's super cool research project :3
+            </p>
+            <div class="tag-list" aria-label="Topics">
+              <span>Trans health</span>
+              <span>Neuroscience</span>
+              <span>SGBA+</span>
+            </div>
+            <a class="card-link" href="#">Find out more about the cool project here <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <article class="research-card">
+          <div class="research-content">
+            <p class="content-type">Researcher's names</p>
+            <h3>Someone else's super cool research project</h3>
+            <p>
+              Super cool description of someone's super cool research project :3
+            </p>
+            <div class="tag-list" aria-label="Topics">
+              <span>put tags here</span>
+              <span>put tags here</span>
+            </div>
+            <a class="card-link" href="#">Find out more about the cool project here <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <article class="research-card research-card-coral">
+          <div class="research-content">
+            <p class="content-type">Researcher's names</p>
+            <h3>Someone else's super cool research project</h3>
+            <p>
+              Super cool description of someone's super cool research project :3
+            </p>
+            <div class="tag-list" aria-label="Topics">
+              <span>put tags here</span>
+              <span>put tags here</span>
+            </div>
+            <a class="card-link" href="#">Find out more about the cool project here <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="events-section section" id="events">
+      <div class="events-intro">
+        <div class="section-label">03 / Events</div>
+        <h2>Events that make space and celebrate queer joy.</h2>
         <p>
-          The hub supports projects that centre queer experiences across disciplines, while creating space to share ideas, highlight queer scholarship, foster collaboration, and build visibility for queer research.
+          Join talks, workshops, social gatherings, and events for queer research.
         </p>
+      </div>
+
+      <div class="event-list">
+        <article class="event-item">
+          <time datetime="2026-09-xx"><span>SEP</span>xx</time>
+          <div>
+            <p class="content-type">Community Connection</p>
+            <h3>Cafe chat and social</h3>
+          </div>
+          <a href="#" aria-label="Cafe chat and social">↗</a>
+        </article>
+        <article class="event-item">
+          <time datetime="2027-05-xx"><span>xxx</span>xx</time>
+          <div>
+            <p class="content-type">Research Event</p>
+            <h3>Queerposium 2.0</h3>
+          </div>
+          <a href="#" aria-label="View Research relationships built on reciprocity event">↗</a>
+        </article>
+        <!-- <article class="event-item">
+          <time datetime="2027-05-14"><span>MAY</span>14</time>
+          <div>
+            <p class="content-type">Annual gathering · Calgary</p>
+            <h3>Queerposium 2027</h3>
+          </div>
+          <a href="#" aria-label="View Queerposium 2027 event">↗</a>
+        </article> -->
+      </div>
+    </section>
+
+    <section class="people-section section" id="people">
+      <div class="section-heading-row">
+        <div>
+          <div class="section-label">04 / About us </div>
+          <h2>A network shaped by many kinds of expertise.</h2>
+        </div>
+        <p class="section-side-copy">
+          Faculty, students, staff, artists, practitioners, and community partners
+          all belong here.
+        </p>
+      </div>
+
+      <div class="people-grid">
+        <article class="person-card">
+          <div class="person-portrait portrait-one" aria-hidden="true"><span>Pic</span></div>
+          <div>
+            <p class="person-role">Co-founder · Faculty</p>
+            <h3>Emma Farago (add pronouns)</h3>
+            <div class="tag-list"><span>Add tag</span><span>Add tag</span></div>
+            <h1>I will also put an arrow thing here so the cell will expand to show a bio</h1>
+
+          </div>
+        </article>
+        <article class="person-card">
+          <div class="person-portrait portrait-two" aria-hidden="true"><span>Pic</span></div>
+          <div>
+            <p class="person-role">Co-founder · Faculty</p>
+            <h3>Robyn Paul ()</h3>
+            <div class="tag-list"><span>Add tag</span><span>Add tag</span></div>
+          </div>
+        </article>
+        <article class="person-card">
+          <div class="person-portrait portrait-three" aria-hidden="true"><span>Pic</span></div>
+          <div>
+            <p class="person-role">Co-founder · Faculty</p>
+            <h3>Tonya Callaghan ()</h3>
+            <div class="tag-list"><span>Add tag</span><span>Add tag</span></div>
+          </div>
+        </article>
+
+          <article class="person-card">
+          <div class="person-portrait portrait-three" aria-hidden="true"><span>Pic</span></div>
+          <div>
+            <p class="person-role">Co-founder · Graduate Student</p>
+            <h3>Jamie Anderson ()</h3>
+            <div class="tag-list"><span>Add tag</span><span>Add tag</span></div>
+          </div>
+        </article>
+
+          <article class="person-card">
+          <div class="person-portrait portrait-three" aria-hidden="true"><span>Pic</span></div>
+          <div>
+            <p class="person-role">Co-founder · Graduate Student</p>
+            <h3>Josiah Lansang (he/him)</h3>
+            <div class="tag-list"><span>Add tag</span><span>Add tag</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="resource-section section" id="resources">
+      <div class="resource-panel">
+        <div>
+          <p class="eyebrow">TODO</p>
+          <h2>Ideas to refine this website</h2>
+        </div>
+        <div>
+          <p>Create a solo Queerposium page, where we can include pictures from the event</p>
+          <p>Think about where I can put real pictures on THIS page</p>
+          <p>Put more queer elements (flags, etc) </p>
+        </div>
+        <!-- <div class="resource-links">
+          <a href="#"><span>Research summaries</span><span>24 resources ↗</span></a>
+          <a href="#"><span>Methods and ethics</span><span>12 resources ↗</span></a>
+          <a href="#"><span>Teaching materials</span><span>18 resources ↗</span></a>
+          <a href="#"><span>Community toolkits</span><span>9 resources ↗</span></a>
+        </div> -->
+      </div>
+    </section>
+
+    <section class="connect-section" id="connect">
+      <div class="connect-art" aria-hidden="true">
+        <span class="connect-star">✦</span>
+        <span class="connect-loop"></span>
+        <span class="connect-dot dot-one"></span>
+        <span class="connect-dot dot-two"></span>
+        <span class="connect-dot dot-three"></span>
+      </div>
+      <div class="connect-copy">
+        <h2>Bring your research, ideas, and curiosity.</h2>
+        <p>
+          Join the mailing list for events, opportunities, research calls, and opportunites for collaboration.
+        </p>
+        <form class="signup-form" action="#" method="post">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" name="email" placeholder="Email address" required />
+          <button type="submit">Join the hub <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <a class="brand" href="#top" aria-label="Queer Research Hub home">
+        <img class="brand-mark" src="assets\queer_research_hub_logo.png" alt="" aria-hidden="true" />
+      </a>
+      <!-- <p>Research with community. Knowledge with joy.</p> -->
+       <h4> Add other logos here like UCalgary, Schulich, QritiCal, other orgs (GSA^2 maybe?)</h2>
+    </div>
+
+    <div class="footer-links">
+      <div>
+        <h3>Explore</h3>
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#events">Events</a>
+        <a href="#people">People</a>
+      </div>
+      <div>
+        <h3>Social Media</h3>
+        <a href="mailto:hello@example.ca">Email</a>
+        <a href="#">Instagram?</a>
+        <a href="#">LinkedIn?</a>
+        <a href="#">Other social media?</a>
       </div>
     </div>
 
-  </div>
-</section>
+    <div class="footer-bottom">
+      <!-- <p>2026 Queer Research Hub</p> -->
 
+        The University of Calgary, located in the heart of Southern Alberta, both acknowledges and pays tribute to the traditional territories of the peoples of Treaty 7, which include the Blackfoot Confederacy (comprised of the Siksika, the Piikani, and the Kainai First Nations), the Tsuut’ina First Nation, and the Stoney Nakoda (including Chiniki, Bearspaw, and Goodstoney First Nations). The city of Calgary is also home to the Métis Nation within Alberta (including Nose Hill Métis District 5 and Elbow Métis District 6).
+        <br>
+        <br>
+        The University of Calgary is situated on land Northwest of where the Bow River meets the Elbow River, a site traditionally known as Moh’kins’tsis to the Blackfoot, Wîchîspa to the Stoney Nakoda, and Guts’ists’i to the Tsuut’ina. On this land and in this place we strive to learn together, walk together, and grow together “in a good way.”
 
-  <script src="script.js"></script>
+    </div>
+  </footer>
 </body>
 </html>
