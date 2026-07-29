@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiating Graph Scroll Animation</title>
+    
+    <!-- Import Poppins font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            /* New aesthetic background: warm off-white with soft ambient color blobs matching the real site's cards (lilac, yellow, mint, coral) */
+            background-color: #FAFAF9;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(200, 162, 200, 0.12) 0px, transparent 50%),   /* Lilac */
+                radial-gradient(at 100% 0%, rgba(253, 224, 71, 0.10) 0px, transparent 50%),  /* Yellow */
+                radial-gradient(at 100% 100%, rgba(110, 231, 183, 0.12) 0px, transparent 50%), /* Mint */
+                radial-gradient(at 0% 100%, rgba(255, 127, 80, 0.10) 0px, transparent 50%);  /* Coral */
+            height: 100vh; /* Locked to exactly 1 screen height */
+            overflow: hidden; /* Removes the browser scrollbar entirely */
+            font-family: sans-serif;
+        }
+
+        /* New Welcome Text Style */
+        #welcome-text {
+            position: fixed;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 56px;
+            color: #111; /* Dark grey/black for contrast */
+            letter-spacing: 2px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Container for the logo text on the right */
+        #logo-container {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Left aligns 'queer' and 'research hub' to each other */
+            z-index: 10;
+            pointer-events: none;
+
+
+            left: 50%;
+            right: auto;
+            top: 50%;
+            transform: translateY(-50%);
+
+        }
+
+
+        /* Updated Queer Text Style (matching the image) */
+        #queer-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700; /* Made slightly bolder to match the logo */
+            font-size: 200px; /* Increased size to match visual weight */
+            letter-spacing: -2px; /* Tighter letter spacing like the logo */
+            text-transform: lowercase;
+            line-height: 1.1;
+            padding-bottom: 15px;
+            /* Logo rainbow gradient (Yellow -> Orange -> Red -> Purple -> Blue) */
+            background: linear-gradient(90deg, #FFB800 0%, #FF5200 20%, #E30513 40%, #A40071 60%, #4B0082 80%, #357BFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* New Research Hub Text Style */
+        #research-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 72px;
+            color: black; /* Very faint grey to mimic the image's low-contrast look, adjust to #333 if you want it more visible on white */
+            letter-spacing: 5px; /* Spaced out heavily */
+            text-transform: lowercase;
+            margin-top: 0; /* Pulls it tighter to the 'queer' text */
+            padding-left: 0; /* Slight offset */
+        }
+
+        #scroll-hint {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 14px;
+            letter-spacing: 1px;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; 
+            padding-left: 5vw; 
+            box-sizing: border-box; 
+        }
+
+        svg {
+            width: 85vmin;
+            height: 85vmin;
+            overflow: visible;
+        }
+
+        .node {
+            stroke: #ffffff;
+            stroke-width: 0.0127; 
+            stroke-opacity: 0; 
+            transition: stroke-opacity 0.2s ease;
+        }
+
+        #nodes.show-buffer .node {
+            stroke-opacity: 1;
+        }
+
+        path {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .outer-path {
+            stroke-width: 0.0457;
+        }
+
+        .inner-path {
+            stroke-width: 0.0381;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-text">Welcome to the</div>
+    
+    <!-- Updated Right Side Text -->
+    <div id="logo-container">
+        <div id="queer-text">queer</div>
+        <div id="research-text">research hub</div>
+    </div>
+
+    <div id="scroll-hint">SCROLL DOWN ↓</div>
+
+    <div class="container">
+        <svg id="canvas" viewBox="-1.25 -1.25 2.5 2.5">
+            <defs id="defs">
+                <clipPath id="image-clip">
+                    <circle id="bg-clip-circle" cx="0" cy="0" r="0" />
+                </clipPath>
+            </defs>
+            <g id="scene" transform="scale(1, -1)">
+                <image id="bg-image" href="calgary_skyline.png" 
+                    x="-0.980" y="-0.730" width="2.030" height="2.030" 
+                    preserveAspectRatio="xMidYMid meet" 
+                    clip-path="url(#image-clip)" 
+                    transform="scale(1, -1)" />
+
+                <g id="edges"></g>
+                <g id="nodes"></g>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        // --- 1. Define Data & Scale Logic ---
+        const R = 0.95;
+        const deg2rad = d => d * Math.PI / 180;
+        
+        const nodeScale = 1.333650793650794;
+        
+        const nodesData = {
+            blue_1:  { angle: 140,  c: "#E40303", r: 0.10 * nodeScale },
+            pink_1:  { angle: 35,   c: "#FF8C00", r: 0.10 * nodeScale },
+            white_1: { angle: -20,  c: "#FFED00", r: 0.10 * nodeScale },
+            pink_2:  { angle: -85,  c: "#008026", r: 0.10 * nodeScale },
+            blue_2:  { angle: -160, c: "#004DFF", r: 0.10 * nodeScale },
+            pink_3:  { x: -0.28, y: 0.25, c: "#750787", r: 0.10 * nodeScale }, 
+            white_2: { x: 0.08,  y: 0.00, c: "#FFAFC8", r: 0.10 * nodeScale }, 
+        };
+
+        for (let key in nodesData) {
+            if (nodesData[key].angle !== undefined) {
+                nodesData[key].x = R * Math.cos(deg2rad(nodesData[key].angle));
+                nodesData[key].y = R * Math.sin(deg2rad(nodesData[key].angle));
+            }
+        }
+
+        const outerSegments = [
+            { n1: "blue_1", n2: "pink_1" },
+            { n1: "pink_1", n2: "white_1" },
+            { n1: "white_1", n2: "pink_2" },
+            { n1: "pink_2", n2: "blue_2" },
+            { n1: "blue_2", n2: "blue_1" }
+        ];
+
+        const innerCurves = [
+            { n1: "pink_3", n2: "blue_1", cp1: [-0.7521013618953039, 0.2909987232231521], cp2: [-0.65, 0.8] },
+            { n1: "pink_3", n2: "white_2", cp1: [-0.1, 0.28], cp2: [0.0, 0.1] },
+            { n1: "white_2", n2: "pink_1", cp1: [0.11681621506596729, 0.5215278762945097], cp2: [0.45, 0.62] },
+            { n1: "white_2", n2: "white_1", cp1: [0.5483195015841495, 0.11957960940086076], cp2: [0.75, 0.12] },
+            { n1: "white_2", n2: "pink_2", cp1: [0.23503629356409972, -0.2528136378682557], cp2: [0.5542305055090564, -0.5542748380384923] },
+            { n1: "blue_2", n2: "white_2", cp1: [-0.4151741381756273, -0.5660968458883056], cp2: [-0.06642490660613733, -0.38876672814110735] },
+            { n1: "blue_2", n2: "pink_3", cp1: [-0.781656381519837, 0.03682555445216806], cp2: [-0.6220592755473586, 0.2318886839740859] }
+        ];
+
+        // --- 2. Build SVG Hierarchy ---
+        const defs = document.getElementById("defs");
+        const edgesG = document.getElementById("edges");
+        const nodesG = document.getElementById("nodes");
+        const bgClipCircle = document.getElementById("bg-clip-circle");
+        let edgeCounter = 0;
+
+        function createEdge(edgeData, isOuter) {
+            let id = "edge-" + (edgeCounter++);
+            
+            let grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+            grad.id = "grad-" + id;
+            grad.setAttribute("gradientUnits", "userSpaceOnUse");
+
+            let stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+            stop1.setAttribute("offset", "0%");
+            stop1.setAttribute("stop-color", nodesData[edgeData.n1].c);
+
+            let stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+            stop2.setAttribute("offset", "100%");
+            stop2.setAttribute("stop-color", nodesData[edgeData.n2].c);
+
+            grad.appendChild(stop1);
+            grad.appendChild(stop2);
+            defs.appendChild(grad);
+
+            let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("stroke", `url(#grad-${id})`);
+            path.setAttribute("class", isOuter ? "outer-path" : "inner-path");
+            edgesG.appendChild(path);
+
+            return { path, grad, data: edgeData, isOuter };
+        }
+
+        let animatedEdges = [];
+        outerSegments.forEach(seg => animatedEdges.push(createEdge(seg, true)));
+        innerCurves.forEach(seg => animatedEdges.push(createEdge(seg, false)));
+
+        let animatedNodes = [];
+        for (let key in nodesData) {
+            let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("fill", nodesData[key].c);
+            circle.setAttribute("r", nodesData[key].r);
+            circle.setAttribute("class", "node");
+            nodesG.appendChild(circle);
+            animatedNodes.push({ circle, data: nodesData[key] });
+        }
+
+        // --- 3. Animation Render Logic ---
+        function renderGraph(progress) {
+            const p = Math.max(0.001, progress); 
+            
+            let currentOuterRadius = R * p;
+            bgClipCircle.setAttribute("r", currentOuterRadius);
+
+            animatedNodes.forEach(n => {
+                n.circle.setAttribute("cx", n.data.x * p);
+                n.circle.setAttribute("cy", n.data.y * p);
+            });
+
+            animatedEdges.forEach(e => {
+                let n1 = nodesData[e.data.n1];
+                let n2 = nodesData[e.data.n2];
+
+                let x1 = n1.x * p, y1 = n1.y * p;
+                let x2 = n2.x * p, y2 = n2.y * p;
+
+                e.grad.setAttribute("x1", x1);
+                e.grad.setAttribute("y1", y1);
+                e.grad.setAttribute("x2", x2);
+                e.grad.setAttribute("y2", y2);
+
+                if (e.isOuter) {
+                    e.path.setAttribute("d", `M ${x1} ${y1} A ${currentOuterRadius} ${currentOuterRadius} 0 0 0 ${x2} ${y2}`);
+                } else {
+                    let cx1 = e.data.cp1[0] * p, cy1 = e.data.cp1[1] * p;
+                    let cx2 = e.data.cp2[0] * p, cy2 = e.data.cp2[1] * p;
+                    e.path.setAttribute("d", `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`);
+                }
+            });
+        }
+
+        // --- 4. Virtual Scroll Handling ---
+        const scrollHint = document.getElementById("scroll-hint");
+        
+        let scrollProgress = 0;
+        let isLocked = false;
+
+        function updateAnimation() {
+            scrollHint.style.opacity = scrollProgress > 0.05 ? "0" : "1";
+
+            if (scrollProgress > 0.05) {
+                nodesG.classList.add("show-buffer");
+            } else {
+                nodesG.classList.remove("show-buffer");
+            }
+
+            let easeOut = 1 - Math.pow(1 - scrollProgress, 3);
+            renderGraph(easeOut);
+
+            if (scrollProgress === 1 && !isLocked) {
+                isLocked = true; 
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000); 
+            }
+        }
+
+        window.addEventListener("wheel", (e) => {
+            if (isLocked) return; 
+
+            scrollProgress += e.deltaY * 0.0015;
+            scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+            
+            updateAnimation();
+        });
+
+        let lastTouchY = 0;
+        window.addEventListener("touchstart", (e) => {
+            if (isLocked) return;
+            lastTouchY = e.touches[0].clientY;
+        });
+        
+        window.addEventListener("touchmove", (e) => {
+            if (isLocked) return; 
+
+            let currentTouchY = e.touches[0].clientY;
+            let deltaY = lastTouchY - currentTouchY;
+            
+            scrollProgress += deltaY * 0.003; 
+            scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+            
+            lastTouchY = currentTouchY;
+            updateAnimation();
+        });
+
+        updateAnimation();
+
+    </script>
+</body>
+</html>

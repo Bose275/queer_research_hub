@@ -517,10 +517,9 @@ h3 {
   padding-inline: max(4vw, calc((100vw - var(--max-width)) / 2));
   background:
     linear-gradient(90deg, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--purple)) top / 100% 8px no-repeat,
-    var(--ink);
+    var(--ink); /* <-- THIS IS THE DARK PURPLE */
   color: var(--white);
 }
-
 .section-heading-row {
   display: flex;
   justify-content: space-between;
@@ -890,21 +889,22 @@ h3 {
   opacity: 0.72;
 }
 
+
 .connect-section {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
   min-height: 620px;
   border-top: 1.5px solid var(--ink);
-  background: linear-gradient(120deg, var(--yellow), #ffb46b 58%, #ff8dbf);
+  background: linear-gradient(135deg, #FF6B8B 0%, #D152B8 50%, #7038B9 100%);
 }
 
+/* Art: Deep oceanic cyan/blue transitioning to lavender twilight */
 .connect-art {
   position: relative;
   overflow: hidden;
   border-right: 1.5px solid var(--ink);
-  background: linear-gradient(145deg, var(--pink), var(--purple));
+  background: linear-gradient(190deg, #00C9A7 0%, #845EC2 70%, #4B4453 100%);
 }
-
 .connect-loop {
   position: absolute;
   top: 50%;
@@ -1325,7 +1325,7 @@ h3 {
   }
 
   .connect-art {
-    min-height: 380px;
+    min-height: 380px; 
   }
 
   .connect-copy {
