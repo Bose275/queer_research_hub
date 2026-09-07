@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Alignment Editor</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f0f0f0;
+            height: 100vh;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .svg-container {
+            width: 85vmin;
+            height: 85vmin;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Editor UI Panel */
+        #editor-ui {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            min-width: 300px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        /* Output Box */
+        #code-output {
+            background: #2d2d2d;
+            color: #4CAF50;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 15px;
+            font-size: 12px;
+            user-select: all;
+        }
+
+        /* Graph Styles */
+        .node { stroke: #ffffff; stroke-width: 0.0127; }
+        path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .outer-path { stroke-width: 0.0457; }
+        .inner-path { stroke-width: 0.0381; }
+
+        /* Dim the graph slightly so the image stands out while editing */
+        #edges, #nodes { opacity: 0.7; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <div id="editor-ui">
+        <h3>Image Aligner</h3>
+        
+        <div class="control-group">
+            <label><span>Size (Width/Height)</span> <span id="val-size">1.900</span></label>
+            <input type="range" id="slider-size" min="0.1" max="4.0" step="0.01" value="1.9">
+        </div>
+
+        <div class="control-group">
+            <label><span>X Position</span> <span id="val-x">-0.950</span></label>
+            <input type="range" id="slider-x" min="-2.5" max="2.5" step="0.01" value="-0.95">
+        </div>
+
+        <div class="control-group">
+            <label><span>Y Position</span> <span id="val-y">-0.950</span></label>
+            <input type="range" id="slider-y" min="-2.5" max="2.5" step="0.01" value="-0.95">
+        </div>
+
+        <div style="font-size: 12px; color: #666; margin-top: 10px;">
+            Copy this tag to your main file:
+        </div>
+        <div id="code-output"></div>
+    </div>
+
+    <div class="svg-container">
+        <svg id="canvas" viewBox="-1.25 -1.25 2.5 2.5">
+            <defs id="defs">
+                <!-- Static clip path for editor -->
+                <clipPath id="image-clip">
+                    <circle id="bg-clip-circle" cx="0" cy="0" r="0.95" />
+                </clipPath>
+            </defs>
+            <g id="scene" transform="scale(1, -1)">
+                <!-- Target Image: "meet" ensures no cropping -->
+                <image id="bg-image" href="calgary_skyline.png" 
+                       x="-0.95" y="-0.95" width="1.9" height="1.9" 
+                       preserveAspectRatio="xMidYMid meet" 
+                       clip-path="url(#image-clip)" 
+                       transform="scale(1, -1)" />
+
+                <g id="edges"></g>
+                <g id="nodes"></g>
+            </g>
+        </svg>
+    </div>
+
+    <script>
+        // --- Editor Logic ---
+        const bgImage = document.getElementById("bg-image");
+        const sliderSize = document.getElementById("slider-size");
+        const sliderX = document.getElementById("slider-x");
+        const sliderY = document.getElementById("slider-y");
+        
+        const valSize = document.getElementById("val-size");
+        const valX = document.getElementById("val-x");
+        const valY = document.getElementById("val-y");
+        const codeOutput = document.getElementById("code-output");
+
+        function updateImage() {
+            const size = parseFloat(sliderSize.value).toFixed(3);
+            const x = parseFloat(sliderX.value).toFixed(3);
+            const y = parseFloat(sliderY.value).toFixed(3);
+
+            valSize.textContent = size;
+            valX.textContent = x;
+            valY.textContent = y;
+
+            bgImage.setAttribute("width", size);
+            bgImage.setAttribute("height", size);
+            bgImage.setAttribute("x", x);
+            bgImage.setAttribute("y", y);
+
+            // Generate output code with "meet"
+            const outputStr = `<image id="bg-image" href="calgary_skyline.png" \n       x="${x}" y="${y}" width="${size}" height="${size}" \n       preserveAspectRatio="xMidYMid meet" \n       clip-path="url(#image-clip)" \n       transform="scale(1, -1)" />`;
+            codeOutput.textContent = outputStr;
+        }
+
+        sliderSize.addEventListener("input", updateImage);
+        sliderX.addEventListener("input", updateImage);
+        sliderY.addEventListener("input", updateImage);
+
+        // Initialize output box
+        updateImage();
+
+
+        // --- Static Graph Render Logic (from previous files) ---
+        const R = 0.95;
+        const deg2rad = d => d * Math.PI / 180;
+        const nodeScale = 1.333650793650794;
+        
+        const nodesData = {
+            blue_1:  { angle: 140,  c: "#E40303", r: 0.10 * nodeScale },
+            pink_1:  { angle: 35,   c: "#FF8C00", r: 0.10 * nodeScale },
+            white_1: { angle: -20,  c: "#FFED00", r: 0.10 * nodeScale },
+            pink_2:  { angle: -85,  c: "#008026", r: 0.10 * nodeScale },
+            blue_2:  { angle: -160, c: "#004DFF", r: 0.10 * nodeScale },
+            pink_3:  { x: -0.28, y: 0.25, c: "#750787", r: 0.10 * nodeScale }, 
+            white_2: { x: 0.08,  y: 0.00, c: "#FFAFC8", r: 0.10 * nodeScale }, 
+        };
+
+        for (let key in nodesData) {
+            if (nodesData[key].angle !== undefined) {
+                nodesData[key].x = R * Math.cos(deg2rad(nodesData[key].angle));
+                nodesData[key].y = R * Math.sin(deg2rad(nodesData[key].angle));
+            }
+        }
+
+        const outerSegments = [
+            { n1: "blue_1", n2: "pink_1" },
+            { n1: "pink_1", n2: "white_1" },
+            { n1: "white_1", n2: "pink_2" },
+            { n1: "pink_2", n2: "blue_2" },
+            { n1: "blue_2", n2: "blue_1" }
+        ];
+
+        const innerCurves = [
+            { n1: "pink_3", n2: "blue_1", cp1: [-0.7521013618953039, 0.2909987232231521], cp2: [-0.65, 0.8] },
+            { n1: "pink_3", n2: "white_2", cp1: [-0.1, 0.28], cp2: [0.0, 0.1] },
+            { n1: "white_2", n2: "pink_1", cp1: [0.11681621506596729, 0.5215278762945097], cp2: [0.45, 0.62] },
+            { n1: "white_2", n2: "white_1", cp1: [0.5483195015841495, 0.11957960940086076], cp2: [0.75, 0.12] },
+            { n1: "white_2", n2: "pink_2", cp1: [0.23503629356409972, -0.2528136378682557], cp2: [0.5542305055090564, -0.5542748380384923] },
+            { n1: "blue_2", n2: "white_2", cp1: [-0.4151741381756273, -0.5660968458883056], cp2: [-0.06642490660613733, -0.38876672814110735] },
+            { n1: "blue_2", n2: "pink_3", cp1: [-0.781656381519837, 0.03682555445216806], cp2: [-0.6220592755473586, 0.2318886839740859] }
+        ];
+
+        const defs = document.getElementById("defs");
+        const edgesG = document.getElementById("edges");
+        const nodesG = document.getElementById("nodes");
+        let edgeCounter = 0;
+
+        function createEdge(edgeData, isOuter) {
+            let id = "edge-" + (edgeCounter++);
+            
+            let grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+            grad.id = "grad-" + id;
+            grad.setAttribute("gradientUnits", "userSpaceOnUse");
+
+            let stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+            stop1.setAttribute("offset", "0%");
+            stop1.setAttribute("stop-color", nodesData[edgeData.n1].c);
+
+            let stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+            stop2.setAttribute("offset", "100%");
+            stop2.setAttribute("stop-color", nodesData[edgeData.n2].c);
+
+            grad.appendChild(stop1);
+            grad.appendChild(stop2);
+            defs.appendChild(grad);
+
+            let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("stroke", `url(#grad-${id})`);
+            path.setAttribute("class", isOuter ? "outer-path" : "inner-path");
+            edgesG.appendChild(path);
+
+            return { path, grad, data: edgeData, isOuter };
+        }
+
+        let animatedEdges = [];
+        outerSegments.forEach(seg => animatedEdges.push(createEdge(seg, true)));
+        innerCurves.forEach(seg => animatedEdges.push(createEdge(seg, false)));
+
+        let animatedNodes = [];
+        for (let key in nodesData) {
+            let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("fill", nodesData[key].c);
+            circle.setAttribute("r", nodesData[key].r);
+            circle.setAttribute("class", "node");
+            nodesG.appendChild(circle);
+            animatedNodes.push({ circle, data: nodesData[key] });
+        }
+
+        // Render Graph fully expanded (progress = 1.0)
+        function renderStaticGraph() {
+            const p = 1.0; 
+
+            animatedNodes.forEach(n => {
+                n.circle.setAttribute("cx", n.data.x * p);
+                n.circle.setAttribute("cy", n.data.y * p);
+            });
+
+            animatedEdges.forEach(e => {
+                let n1 = nodesData[e.data.n1];
+                let n2 = nodesData[e.data.n2];
+
+                let x1 = n1.x * p, y1 = n1.y * p;
+                let x2 = n2.x * p, y2 = n2.y * p;
+
+                e.grad.setAttribute("x1", x1);
+                e.grad.setAttribute("y1", y1);
+                e.grad.setAttribute("x2", x2);
+                e.grad.setAttribute("y2", y2);
+
+                if (e.isOuter) {
+                    let radius = R * p;
+                    e.path.setAttribute("d", `M ${x1} ${y1} A ${radius} ${radius} 0 0 0 ${x2} ${y2}`);
+                } else {
+                    let cx1 = e.data.cp1[0] * p, cy1 = e.data.cp1[1] * p;
+                    let cx2 = e.data.cp2[0] * p, cy2 = e.data.cp2[1] * p;
+                    e.path.setAttribute("d", `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`);
+                }
+            });
+        }
+        
+        renderStaticGraph();
+
+    </script>
+</body>
+</html>
