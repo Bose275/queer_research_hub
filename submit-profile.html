@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit your profile · Queer Research Network</title>
+  <meta name="description" content="Share your research interests and request a profile in the Queer Research Network directory.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="profile-form.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="supabase-config.js"></script>
+  <script defer src="submit-profile.js"></script>
+</head>
+<body class="profile-page">
+  <a class="profile-skip" href="#profile-main">Skip to form</a>
+  <header class="profile-header">
+    <a href="index.html">Queer Research Network</a>
+    <a href="index.html#people">Back to the network ↗</a>
+  </header>
+  <main id="profile-main" class="profile-main">
+    <h1>Future work: migrate this to a microsoft form</h1>
+    <p class="profile-intro">Request here to put a profile in our researcher directory. Students, faculty, staff, community researchers, and collaborators are welcome!</p>
+    <p>We will review your submission before it appears on the website. Share only details you want displayed publicly. Your contact email will remain private.</p>
+    <noscript><p class="profile-notice">Please enable JavaScript to submit this form.</p></noscript>
+    <p id="form-status" class="profile-status" role="status" aria-live="polite" tabindex="-1">Connecting to the submission form…</p>
+
+    <form id="profile-form">
+      <fieldset id="profile-fields" disabled>
+        <legend>Your profile</legend>
+        <p class="profile-help">Fields marked * are required.</p>
+        <div class="profile-form-grid">
+          <label>Display name *<input name="display_name" autocomplete="name" required maxlength="150"></label>
+          <label>Pronouns <span class="profile-optional">(optional)</span><input name="pronouns"></label>
+          <label class="profile-wide">Contact email *<input name="submitter_email" type="email" autocomplete="email" required maxlength="254" aria-describedby="email-help"></label>
+          <label>Role<input name="role_type" list="profile-role-options" maxlength="150" placeholder="Choose or write your role"></label>
+          <datalist id="profile-role-options"><option value="Graduate Student"><option value="Undergraduate Student"><option value="Faculty"><option value="Postdoctoral Researcher"><option value="Staff"><option value="Community Researcher"><option value="Community Partner"></datalist>
+          <label>Position or title<input name="title" maxlength="200" placeholder="e.g. MSc student, Assistant Professor"></label>
+          <label class="profile-wide">Institution or organization<input name="institution" autocomplete="organization" maxlength="200"></label>
+          <label>Faculty or school<input name="faculty" maxlength="200"></label>
+          <label>Department<input name="department" maxlength="200"></label>
+          <label class="profile-wide">Bio<textarea name="bio" rows="6" maxlength="3000" placeholder="Tell us about your work, interests, and the connections you’d like to make."></textarea></label>
+          <div class="profile-wide photo-field">
+            <label for="profile-photo">Profile photo <span class="profile-optional">(optional)</span></label>
+            <input id="profile-photo" name="profile_photo" type="file" accept="image/jpeg,image/png,image/webp">
+            <small>Place a jpg, png, or webp image up to 8mb.</small>
+            <div id="photo-crop-controls" hidden>
+              <p class="profile-help">Preview of the square crop. Adjust if needed.</p>
+              <label>Left to right<input id="photo-x" type="range" min="0" max="100" value="50"></label>
+              <label>Top to bottom<input id="photo-y" type="range" min="0" max="100" value="50"></label>
+              <canvas id="photo-canvas" width="600" height="600" aria-label="Square profile photo crop preview"></canvas>
+            </div>
+            <label id="photo-consent-wrap" class="profile-checkbox" hidden><input name="photo_consent" type="checkbox"><span>I consent to this photo being displayed publicly with my profile if it is approved.</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset id="tag-fields" disabled>
+        <legend>Research interests</legend>
+        <p class="profile-help">Choose topics, disciplines, or approaches that fit your work.</p>
+        <div id="tag-options" class="profile-tag-options" aria-live="polite"></div>
+        <label>Other interests<textarea name="other_tags" rows="2" maxlength="1600" placeholder="Separate suggestions with commas, e.g. queer art, migration, disability"></textarea></label>
+      </fieldset>
+
+      <fieldset id="link-fields" disabled>
+        <legend>Public links <span class="profile-optional">(optional)</span></legend>
+        <div class="profile-form-grid">
+          <label class="profile-wide">Website or institutional profile<input name="website_url" type="url" placeholder="https://" maxlength="2048"></label>
+          <!-- <label>ORCID profile<input name="orcid_url" type="url" placeholder="https://orcid.org/…" maxlength="2048"></label> -->
+          <label>LinkedIn profile<input name="linkedin_url" type="url" placeholder="https://www.linkedin.com/in/…" maxlength="2048"></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="consent-fields" disabled>
+        <legend>Permission to publish</legend>
+        <label class="profile-checkbox"><input name="consent_to_publish" type="checkbox" required><span>I consent to the Queer Research Network displaying my submitted profile details and links publicly after review. My contact email will stay private. *</span></label>
+      </fieldset>
+      <div class="profile-actions"><button id="profile-submit" type="submit" disabled>Submit for review <span aria-hidden="true">→</span></button><span>Your profile appears after approval.</span></div>
+    </form>
+    <section id="profile-success" class="profile-success" hidden tabindex="-1" aria-labelledby="success-heading">
+      <h2 id="success-heading">Thanks for sharing your work.</h2>
+      <p>Your profile has been submitted for review. It will appear in the directory after approval.</p>
+      <a href="index.html#people">Return to the network ↗</a>
+    </section>
+  </main>
+</body>
+</html>

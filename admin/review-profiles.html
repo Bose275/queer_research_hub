@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="same-origin">
+  <title>Profile review · Queer Research Network</title>
+  <link rel="stylesheet" href="admin.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="../supabase-config.js"></script>
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to submissions</a>
+  <header class="topbar">
+    <a class="brand" href="../index.html">Queer Research Network</a>
+    <span class="admin-label">Private profile review</span>
+  </header>
+  <main id="main" class="main">
+    <div class="intro">
+      <p class="eyebrow">Directory moderation</p>
+      <h1>Profile submissions</h1>
+      <p>Review consent and profile details before anything goes live. Contact emails are visible only to signed-in reviewers.</p>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite" tabindex="-1">Loading the reviewer sign-in…</p>
+
+    <section id="login-panel" class="panel" hidden aria-labelledby="login-title">
+      <h2 id="login-title">Reviewer sign-in</h2>
+      <form id="login-form">
+        <label for="login-email">Reviewer email</label>
+        <input id="login-email" type="email" autocomplete="username" required>
+        <label for="login-password">Password</label>
+        <div class="login-row"><input id="login-password" type="password" autocomplete="current-password" required><button type="submit">Sign in</button></div>
+      </form>
+      <p class="hint">Use the email address and password for your invited reviewer account.</p>
+    </section>
+
+    <section id="queue-panel" hidden aria-labelledby="queue-heading">
+      <div class="queue-heading"><div><h2 id="queue-heading">Waiting for review</h2><p id="queue-count" class="hint"></p></div><div class="queue-actions"><button id="refresh-button" class="secondary" type="button">Refresh queue</button><button id="sign-out-button" class="secondary" type="button">Sign out</button></div></div>
+      <div id="empty-state" class="panel" hidden><h3>All caught up</h3><p>There are no profiles waiting for review.</p></div>
+      <div id="submissions" class="submissions"></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Submit your research · Queer Research Network</title>
+  <meta name="description" content="Share your research with the Queer Research Network.">
+  <meta name="theme-color" content="#28123d">
+
+  <link rel="icon" href="assets/queer_research_hub_logo_only.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="research-form.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="submit-research.js"></script>
+</head>
+
+<body class="profile-page">
+
+  <a class="profile-skip" href="#research-main">Skip to form</a>
+
+  <header class="profile-header">
+    <a href="index.html">Queer Research Network</a>
+    <a href="research.html">Back to the research ↗</a>
+  </header>
+
+  <main id="research-main" class="profile-main">
+
+    <p class="profile-eyebrow">Connect · Collaborate · Elevate</p>
+
+    <h1>Future work: migrate this to a microsoft form</h1>
+
+    <p class="profile-intro">
+      From student projects to community-led research, we want to celebrate
+      the work happening across our network.
+    </p>
+
+    <p>
+      Submissions are reviewed before publication.
+      Your contact details stay private.
+    </p>
+
+    <noscript>
+      <p class="profile-notice">
+        Please enable JavaScript to submit this form.
+      </p>
+    </noscript>
+
+    <p
+      id="form-status"
+      class="profile-status"
+      role="status"
+      aria-live="polite"
+      tabindex="-1"
+    >Connecting to the submission form…</p>
+
+    <form id="research-form">
+
+      <!-- YOUR RESEARCH -->
+      <fieldset disabled>
+        <legend>Your research</legend>
+
+        <p class="profile-help">Fields marked * are required.</p>
+
+        <div class="profile-form-grid">
+
+          <label class="profile-wide">
+            Project title *
+            <input
+              name="title"
+              required
+              maxlength="250"
+            >
+          </label>
+
+          <label>
+            Project type *
+            <select name="project_type" required>
+              <option value="">Choose a project type</option>
+              <option>Research project</option>
+              <option>Thesis or dissertation</option>
+              <option>Community research</option>
+              <option>Publication</option>
+              <option>Creative research</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <label>
+            Institution or organization
+            <span class="profile-optional">(optional)</span>
+            <input
+              name="institution"
+              maxlength="200"
+            >
+          </label>
+
+          <label class="profile-wide">
+            Researcher or team names *
+            <textarea
+              name="researcher_names"
+              required
+              rows="3"
+              maxlength="3020"
+              placeholder="One person or team per line"
+            ></textarea>
+            <small>These names will appear publicly.</small>
+          </label>
+
+          <label class="profile-wide">
+            Short summary *
+            <textarea
+              id="short-description"
+              name="short_description"
+              required
+              rows="4"
+              maxlength="600"
+              aria-describedby="summary-help summary-count"
+              placeholder="What are you exploring, and why does it matter?"
+            ></textarea>
+            <small id="summary-help">
+              A brief, plain-language introduction to your work.
+              This appears on your research card.
+            </small>
+            <small
+              id="summary-count"
+              class="profile-counter"
+            >0 / 600 characters</small>
+          </label>
+
+          <label class="profile-wide">
+            More about the project
+            <span class="profile-optional">(optional)</span>
+            <textarea
+              name="description"
+              rows="6"
+              maxlength="6000"
+              placeholder="Tell us more about your research, methods, findings, or opportunities to collaborate."
+            ></textarea>
+            <small>Please leave out confidential details.</small>
+          </label>
+
+        </div>
+      </fieldset>
+
+      <!-- RESEARCH TOPICS -->
+      <fieldset disabled>
+        <legend>Research topics</legend>
+
+        <p class="profile-help">
+          Choose topics, disciplines, or approaches that fit your work.
+        </p>
+
+        <div
+          id="tag-options"
+          class="profile-tag-options"
+          aria-live="polite"
+        ></div>
+
+        <label>
+          Other topics
+          <span class="profile-optional">(optional)</span>
+          <textarea
+            name="other_tags"
+            rows="2"
+            maxlength="1600"
+            placeholder="Separate with commas, e.g. queer art, housing, mental health"
+          ></textarea>
+        </label>
+
+      </fieldset>
+
+      <!-- CONTACT -->
+      <fieldset disabled>
+        <legend>Contact for review</legend>
+
+        <div class="profile-form-grid">
+
+          <label class="profile-wide">
+            Your name *
+            <input
+              name="submitter_name"
+              required
+              maxlength="150"
+              autocomplete="name"
+            >
+            <small>
+              For contacting you about your submission only.
+            </small>
+          </label>
+
+          <label class="profile-wide">
+            Contact email *
+            <input
+              name="submitter_email"
+              type="email"
+              required
+              maxlength="254"
+              autocomplete="email"
+              aria-describedby="email-help"
+            >
+            <small id="email-help">
+              Kept private. No mailing list signup.
+            </small>
+          </label>
+
+        </div>
+      </fieldset>
+
+      <!-- CONSENT -->
+      <fieldset disabled>
+        <legend>Permission to publish</legend>
+
+        <label class="profile-checkbox">
+          <input
+            name="consent_to_publish"
+            type="checkbox"
+            required
+          >
+          <span>
+            I am authorized to share this work and consent to the
+            Queer Research Network publishing the submitted project
+            details, researcher names, and topics after review.
+            My contact information will remain private. *
+          </span>
+        </label>
+
+        <div class="profile-honeypot" aria-hidden="true">
+          <label>
+            Leave this field empty
+            <input
+              name="company_website"
+              tabindex="-1"
+              autocomplete="off"
+            >
+          </label>
+        </div>
+
+      </fieldset>
+
+      <!-- SUBMIT -->
+      <div class="profile-actions">
+        <button
+          id="research-submit"
+          type="submit"
+          disabled
+        >
+          Submit for review
+          <span aria-hidden="true">→</span>
+        </button>
+        <span>Your project appears after approval.</span>
+      </div>
+
+    </form>
+
+    <!-- SUCCESS -->
+    <section
+      id="research-success"
+      class="profile-success"
+      hidden
+      tabindex="-1"
+      aria-labelledby="success-heading"
+    >
+      <h2 id="success-heading">
+        Thanks for sharing your work.
+      </h2>
+      <p>
+        Your research has been submitted for review.
+        It will appear on the research page after approval.
+      </p>
+      <a href="research.html">
+        Explore the research ↗
+      </a>
+    </section>
+
+  </main>
+
+</body>
+</html>

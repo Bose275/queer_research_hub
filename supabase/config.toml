@@ -1,0 +1,4 @@
+# Merge this block into an existing config.toml; keep your profile function block.
+[functions.qrn-research-review]
+verify_jwt = false
+# The handler verifies the user token using Auth, then checks QRN_ADMIN_USER_IDS.
